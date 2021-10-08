@@ -1,0 +1,10 @@
+export const SORT_BY_NAME_AZ = "SORT_BY_NAME_AZ"
+export const SORT_BY_NAME_ZA = "SORT_BY_NAME_ZA"
+export const NEWEST_DATE = "NEWEST_DATE"
+export const OLDEST_DATE = "OLDEST_DATE"
+export const NO_SORT = "NO_SORT"
+export const SORT_TRANSACTION = "SORT_TRANSACTION"
+export const SORT_TRANSACTION_WITH_SEARCH = "SORT_TRANSACTION_WITH_SEARCH"
+export const RESTORE_LIST = "RESTORE_LIST"
+export const BASE_URL = "https://nextar.flip.id/frontend-test"
+export const MONTH_NAME = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
