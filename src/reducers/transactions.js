@@ -33,7 +33,7 @@ export default (state = initState, action = {}) => {
     case SEARCH_WORD: {
       return {
         ...state,
-        searchList: action.payload,
+        dataList: action.payload,
         isSearch: !(action.payload == null || action.payload === "")
       }
     }

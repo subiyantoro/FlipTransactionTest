@@ -21,6 +21,6 @@ const styleBadge = StyleSheet.create({
   text: {
     color: "black",
     textAlign: "center",
-    fontWeight: "bold"
+    fontSize: 12
   }
 })

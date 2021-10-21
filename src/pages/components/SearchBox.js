@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { TextInput, StyleSheet, View, Image, Text, TouchableOpacity } from "react-native";
+import { TextInput, StyleSheet, View, Image, Text, TouchableOpacity, Keyboard } from "react-native";
 import { Dialog, Portal, RadioButton } from "react-native-paper";
 import { NEWEST_DATE, NO_SORT, OLDEST_DATE, SORT_BY_NAME_AZ, SORT_BY_NAME_ZA } from "../../configs/utils";
 import {
@@ -19,6 +19,7 @@ const SearchBox = (props) => {
     getListTransaction,
     restoreListTransaction,
     doSortWithSearch,
+    dataList,
     doSearch,
     doSort
   } = props
@@ -35,7 +36,13 @@ const SearchBox = (props) => {
         style={styleInput.inputSearch}
         onChangeText={search => {
           setSearchText(search)
+          if(search === "" || search == null) {
+            restoreListTransaction(mainList)
+          }
           doSearch(search, transactions)
+        }}
+        onPressOut={() => {
+          Keyboard.dismiss
         }}
       />
       <TouchableOpacity onPress={() => setVisibleSort(true)}>
@@ -54,7 +61,7 @@ const SearchBox = (props) => {
           <Dialog.Content>
             <RadioButton.Group onValueChange={(mode) => {
               setSortMode(mode)
-              let dataTransaction = searchText === "" || searchText == null ? transactions : searchList
+              let dataTransaction = searchText === "" || searchText == null ? transactions : dataList
               let arrayTransaction
               if (mode === SORT_BY_NAME_AZ) {
                 arrayTransaction = dataTransaction.sort((a, b) => (a["beneficiary_name"] > b["beneficiary_name"]) ? 1 : ((b["beneficiary_name"] > a["beneficiary_name"]) ? -1 : 0))
@@ -64,16 +71,10 @@ const SearchBox = (props) => {
                 arrayTransaction = dataTransaction.sort((a, b) => (a["completed_at"] > b["completed_at"]) ? 1 : ((b["completed_at"] > a["completed_at"]) ? -1 : 0))
               } else if (mode === OLDEST_DATE) {
                 arrayTransaction = dataTransaction.sort((a, b) => (a["completed_at"] < b["completed_at"]) ? 1 : ((b["completed_at"] < a["completed_at"]) ? -1 : 0))
+              } else if (mode === NO_SORT) {
+                arrayTransaction = mainList
               }
-              if (mode === NO_SORT) {
-                restoreListTransaction(mainList)
-              }else{
-                if (searchText === "" || searchText == null) {
-                  doSort(arrayTransaction)
-                }else{
-                  doSortWithSearch(arrayTransaction)
-                }
-              }
+              doSort(arrayTransaction)
               setVisibleSort(false)
             }} value={sortMode}>
               <View style={styleInput.viewOption}>
@@ -118,6 +119,7 @@ const styleInput = StyleSheet.create({
 
 function mapStateToProps(state){
   return {
+    dataList: state.transactionStore.dataList,
     searchList: state.transactionStore.searchList,
     mainList: state.transactionStore.saveMainList,
     sortList: state.transactionStore.sortList

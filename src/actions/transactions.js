@@ -102,14 +102,13 @@ export const sortTransactionWithSearch = (transactions: Array) => {
 }
 
 export const restoreListTransaction = (list) => {
-  console.log(list)
-  return async (dispatch) => {
+  return async (dispatch, getState) => {
     dispatch({
       type: LOADING
     })
     dispatch({
       type: RESTORE_LIST,
-      payload: list
+      payload: getState().transactionStore.saveMainList
     })
   }
 }
